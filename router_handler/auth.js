@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const db = require('../db/index')
-
+const config = require('../config')
 
 
 exports.username = (req, res) => {
@@ -49,5 +50,36 @@ exports.register = (req, res) => {
 }
 
 exports.login = (req, res) => {
-
+  const loginData = req.body
+  const sql_login = `select * from bb_users where username=?`
+  db.query(sql_login,loginData.username,(err,results) => {
+    if (err) {
+      return res.err(err)
+    }
+    if (results.length === 0) {
+      return res.err('该用户名不存在')
+    }
+    const compareResult = bcrypt.compareSync(loginData.password, results[0].password)
+    if (!compareResult) {
+      return res.err('密码错误')
+    }
+    // 剔除password user_pic
+    const tokenObj = { ...results[0], password: '', user_pic: '' }
+    const accessToken = jwt.sign(tokenObj, config.jwtSecretKey, {
+      expiresIn: '2h',
+    })
+    const refreshToken = jwt.sign({...tokenObj, 'refresh': true}, config.jwtSecretKey, {
+      expiresIn: '10h',
+    })
+    const {password,...userinfo} = results[0]
+    res.send({
+      code: 20000,
+      message: '登录成功！',
+      data:{
+        userInfo: userinfo,
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      }
+    })
+  })
 }
