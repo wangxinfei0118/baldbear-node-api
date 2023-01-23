@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/wangxinfei0118/baldbear-node-api#readme",
   "dependencies": {
+    "@escook/express-joi": "^1.1.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "joi": "^17.7.0",
     "mysql": "^2.18.1"
   }
 }
