@@ -26,7 +26,15 @@ app.use(function (req, res, next) {
 app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/auth\//] }))
 app.use('/auth', authRouter)
 
-
+// 捕获非自定义错误
+app.use(function (err, req, res, next) {
+  // 表单验证失败
+  if (err instanceof joi.ValidationError) return res.err('表单验证失败')
+  // 身份认证失败
+  if (err.name === 'UnauthorizedError') return res.err('身份认证失败，清重新登录',20401)
+  // 未知错误
+  res.err(err,20500)
+})
 
 app.listen(3008, function () {
   console.log('api server running at http://127.0.0.1:3008')
