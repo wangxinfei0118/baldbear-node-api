@@ -10,6 +10,17 @@ app.use(cors())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
+// 封装处理错误中间件
+app.use(function (req, res, next) {
+  res.err = function (err, code = 20001) {
+    res.send({
+      code,
+      message: err instanceof Error ? err.message : err,
+    })
+  }
+  next()
+})
+
 
 app.use('/auth', authRouter)
 
