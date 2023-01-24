@@ -15,4 +15,8 @@ router.post('/register', expressJoi(reg_schema), authHandler.register)
 // 登录
 router.post('/login', expressJoi(login_schema), authHandler.login)
 
+// 刷新token
+router.get('/refresh', authHandler.refresh)
+
+
 module.exports = router

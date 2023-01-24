@@ -85,3 +85,33 @@ exports.login = (req, res) => {
     })
   })
 }
+
+
+exports.refresh =  (req, res) => {
+  const refreshToken = req.query.refreshToken
+  jwt.verify(refreshToken, config.jwtSecretKey,(err, payload) =>{
+    if (err){
+      return res.err(err)
+    }
+    if (!payload.refresh){
+      return res.err('非refreshToken')
+    }
+    const sql_login = `select * from bb_users where username=?`
+    db.query(sql_login,payload.username,(err,results) => {
+      const tokenObj = { ...results[0], password: '', user_pic: '' }
+      const accessToken = jwt.sign(tokenObj, config.jwtSecretKey, {
+        expiresIn: '2h',
+      })
+      const {password,...userinfo} = results[0]
+      res.send({
+        code: 20000,
+        message: '刷新成功！',
+        data:{
+          userInfo: userinfo,
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        }
+      })
+    })
+  })
+}
