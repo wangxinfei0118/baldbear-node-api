@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const db = require('../db/index')
 const config = require('../config')
-
+const randomName = require('../utils/randomName')
 
 exports.username = (req, res) => {
   const username = req.params.username
@@ -34,9 +34,11 @@ exports.register = (req, res) => {
     // 用户名可用
     // 对密码进行 bcrypt 加密
     regData.password = bcrypt.hashSync(regData.password, 10)
+    // 生成随机昵称
+    regData.nickname = randomName(8)
     // 插入注册信息
     const sql_insert = 'insert into bb_users set ?'
-    db.query(sql_insert, { username: regData.username, password: regData.password }, (err, results) => {
+    db.query(sql_insert, { username: regData.username, password: regData.password, nickname: regData.nickname}, (err, results) => {
       if (err) {
         return res.err(err)
       }
