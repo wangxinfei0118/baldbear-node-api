@@ -86,6 +86,12 @@ exports.login = (req, res) => {
   })
 }
 
+exports.logout =  (req, res) => {
+  res.send({
+    code: 20000,
+    message: '退出成功！',
+  })
+}
 
 exports.refresh =  (req, res) => {
   const refreshToken = req.query.refreshToken

@@ -15,6 +15,9 @@ router.post('/register', expressJoi(reg_schema), authHandler.register)
 // 登录
 router.post('/login', expressJoi(login_schema), authHandler.login)
 
+// 退出登录
+router.get('/logout', authHandler.logout)
+
 // 刷新token
 router.get('/refresh', authHandler.refresh)
 
