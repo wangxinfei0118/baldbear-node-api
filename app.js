@@ -6,6 +6,8 @@ const expressJWT = require('express-jwt')
 const config = require('./config')
 const authRouter = require('./router/auth')
 const userRouter = require('./router/user')
+const noteRouter = require('./router/note')
+
 
 const app = express()
 
@@ -24,9 +26,10 @@ app.use(function (req, res, next) {
   next()
 })
 
-app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/auth\//] }))
+app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/auth\//, /^\/user\//, /^\/note\//] }))
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
+app.use('/note', noteRouter)
 
 
 // 捕获非自定义错误
