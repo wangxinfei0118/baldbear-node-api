@@ -4,6 +4,7 @@ const joi = require('joi')
 const expressJWT = require('express-jwt')
 
 const config = require('./config')
+const convertVar = require('./middleware/convertVar')
 const authRouter = require('./router/auth')
 const userRouter = require('./router/user')
 const noteRouter = require('./router/note')
@@ -28,6 +29,7 @@ app.use(function (req, res, next) {
   next()
 })
 
+app.use(convertVar)
 
 app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/auth\//, /^\/note\//, /^\/life\//, /^\/message\//] }))
 app.use('/auth', authRouter)
