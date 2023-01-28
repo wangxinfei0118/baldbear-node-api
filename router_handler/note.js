@@ -1,17 +1,31 @@
 const db = require('../db/index')
 const getTime = require('../utils/getTime')
+const arrToTree = require('../utils/arrToTree')
 
-exports.getNoteLabel = (req, res) => {
+exports.getNoteLabel = async (req, res) => {
   const sql_label = 'select * from bb_labels'
-  db.query(sql_label, (err, results) => {
-    if (err) {
-      return res.err(err)
-    }
-    res.send({
-      code: 20000,
-      message: '获取笔记分类列表成功！',
-      data: results,
+  const sql_label_item = 'select * from bb_labels_item'
+  const labelList = await new Promise((resolve, reject) => {
+    db.query(sql_label, (err, results) => {
+      if (err) {
+        return res.err(err)
+      }
+      resolve(results)
     })
+  })
+  const labelItemList = await new Promise((resolve, reject) => {
+    db.query(sql_label_item, (err, results) => {
+      if (err) {
+        return res.err(err)
+      }
+      resolve(results)
+    })
+  })
+  const data = arrToTree(labelList,labelItemList,'labelList')
+  res.send({
+    code: 20000,
+    message: '获取笔记分类列表成功！',
+    data
   })
 }
 exports.getNoteList = (req, res) => {
@@ -51,23 +65,7 @@ exports.getNoteById = (req, res) => {
 exports.addNote = (req, res) => {
   const noteData = req.body
   const sql_insert_note = 'insert into bb_notes set ?'
-  db.query(sql_insert_note, {title: noteData.title, summary: noteData.summary, label: noteData.label, image_url: noteData.imageUrl, mdContent: noteData.mdContent, htmlContent: noteData.htmlContent}, (err, results) => {
-    if (err) {
-      return res.err(err)
-    }
-    if (results.affectedRows !== 1) {
-      return res.err('新增笔记失败！')
-    }
-    res.send({
-      code: 20000,
-      message: '新增笔记成功！'
-    })
-  })
-}
-exports.addNote = (req, res) => {
-  const noteData = req.body
-  const sql_insert_note = 'insert into bb_notes set ?'
-  db.query(sql_insert_note, {title: noteData.title, summary: noteData.summary, label: noteData.label, image_url: noteData.imageUrl, mdContent: noteData.mdContent, htmlContent: noteData.htmlContent, create_date: getTime(), update_date: getTime()}, (err, results) => {
+  db.query(sql_insert_note, {title: noteData.title, summary: noteData.summary, label: noteData.label, image_url: noteData.image_url, md_content: noteData.md_content, html_content: noteData.html_content, create_date: getTime(), update_date: getTime()}, (err, results) => {
     if (err) {
       return res.err(err)
     }
@@ -83,8 +81,9 @@ exports.addNote = (req, res) => {
 exports.editNote = (req, res) => {
   const noteId = req.params.id
   const noteData = req.body
-  const sql_edit_note = 'update bb_notes set title=? summary=? label=? image_url=? mdContent=? htmlContent=? update_date=? where note_id=?'
-  db.query(sql_edit_note, [noteData.title, noteData.summary, noteData.label, noteData.imageUrl, noteData.mdContent, noteData.htmlContent, getTime(), noteId], (err, results) => {
+  noteData.update_date = getTime()
+  const sql_edit_note = 'update bb_notes set ? where note_id=?'
+  db.query(sql_edit_note, [noteData, noteId], (err, results) => {
     if (err) {
       return res.err(err)
     }
@@ -136,17 +135,18 @@ exports.getCommentByNoteId = (req, res) => {
     if (err) {
       return res.err(err)
     }
+    const data = arrToTree(results)
     res.send({
       code: 20000,
       message: '获取笔记详情成功！',
-      data: results
+      data
     })
   })
 }
 exports.addComment = (req, res) => {
   const commentData = req.body
   const sql_insert_comment = 'insert into bb_note_comment set ?'
-  db.query(sql_insert_comment, {parent_id: commentData.parentId, user_id: commentData.userId, note_id: commentData.noteId, nickname: commentData.nickname, reply: commentData.reply, user_pic: commentData.userPic, content: commentData.content, create_date: getTime()}, (err, results) => {
+  db.query(sql_insert_comment, {pid: commentData.pid, user_id: commentData.user_id, note_id: commentData.note_id, nickname: commentData.nickname, reply: commentData.reply, user_pic: commentData.user_pic, content: commentData.content, create_date: getTime()}, (err, results) => {
     if (err) {
       return res.err(err)
     }
@@ -161,7 +161,7 @@ exports.addComment = (req, res) => {
 }
 exports.deleteComment = (req, res) => {
   const commentId = req.params.id
-  const sql_delete_comment = 'delete from bb_note_comment where note_id=?'
+  const sql_delete_comment = 'delete from bb_note_comment where id=?'
   db.query(sql_delete_comment, commentId, (err, results) => {
     if (err) {
       return res.err(err)
