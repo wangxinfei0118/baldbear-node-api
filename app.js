@@ -14,10 +14,6 @@ const messageRouter = require('./router/message')
 
 const app = express()
 
-app.use(cors())
-app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
-
 // 封装res.err
 app.use(function (req, res, next) {
   res.err = function (err, code = 20001) {
@@ -28,6 +24,11 @@ app.use(function (req, res, next) {
   }
   next()
 })
+
+app.use(cors())
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
+
 
 app.use(convertVar)
 
