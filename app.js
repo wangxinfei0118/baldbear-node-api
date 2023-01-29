@@ -10,6 +10,7 @@ const userRouter = require('./router/user')
 const noteRouter = require('./router/note')
 const lifeRouter = require('./router/life')
 const messageRouter = require('./router/message')
+const fileRouter = require('./router/file')
 
 
 const app = express()
@@ -38,6 +39,7 @@ app.use('/user', userRouter)
 app.use('/note', noteRouter)
 app.use('/life', lifeRouter)
 app.use('/message', messageRouter)
+app.use('/file', fileRouter)
 
 
 // 错误级别中间件
