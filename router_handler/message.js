@@ -19,7 +19,7 @@ exports.getMessage = (req, res) => {
 exports.addMessage = (req, res) => {
   const messageData = req.body
   const sql_insert_message = 'insert into bb_message set ?'
-  db.query(sql_insert_message, {pid: messageData.pid, user_id: messageData.user_id, nickname: messageData.nickname, reply: messageData.reply, user_pic: messageData.user_pic, content: messageData.content, create_date: getTime()}, (err, results) => {
+  db.query(sql_insert_message, {pid: messageData.pid, user_id: messageData.user_id, nickname: messageData.nickname, below_reply_id: messageData.below_reply_id, below_reply_name: messageData.below_reply_name, user_pic: messageData.user_pic, content: messageData.content, create_date: getTime()}, (err, results) => {
     if (err) {
       return res.err(err)
     }
