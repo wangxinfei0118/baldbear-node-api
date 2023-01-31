@@ -29,8 +29,9 @@ exports.getNoteLabel = async (req, res) => {
   })
 }
 exports.getNoteList = (req, res) => {
-  // 根据req.query.label判断是否是根据标签查询
-  const sql_note_list = `select note_id, title, summary, label, image_url, view_count, chat_count, create_date, update_date from bb_notes ` + (req.query.label ? `where label='${req.query.label}'`:'') + ' order by create_date desc'
+  const obj = req.body
+  // 根据obj.label是否存在判断是否是根据标签查询
+  const sql_note_list = `select note_id, title, summary, label, image_url, view_count, chat_count, create_date, update_date from bb_notes ` + (obj.label ? `where label='${obj.label}'`:'') + ' order by create_date desc'
   // 分页
 
 
@@ -41,7 +42,10 @@ exports.getNoteList = (req, res) => {
     res.send({
       code: 20000,
       message: '获取笔记列表成功！',
-      data: results,
+      data: {
+        total: results.length,
+        records: results
+      }
     })
   })
 }
@@ -65,7 +69,7 @@ exports.getNoteById = (req, res) => {
 exports.addNote = (req, res) => {
   const noteData = req.body
   const sql_insert_note = 'insert into bb_notes set ?'
-  db.query(sql_insert_note, {title: noteData.title, summary: noteData.summary, label: noteData.label, image_url: noteData.image_url, md_content: noteData.md_content, html_content: noteData.html_content, create_date: getTime(), update_date: getTime()}, (err, results) => {
+  db.query(sql_insert_note, {title: noteData.title, summary: noteData.summary, label: noteData.label, image_url: noteData.image_url, view_count: 0, chat_count: 0, md_content: noteData.md_content, html_content: noteData.html_content, create_date: getTime(), update_date: getTime()}, (err, results) => {
     if (err) {
       return res.err(err)
     }
@@ -74,7 +78,8 @@ exports.addNote = (req, res) => {
     }
     res.send({
       code: 20000,
-      message: '新增笔记成功！'
+      message: '新增笔记成功！',
+      data: results.insertId
     })
   })
 }
@@ -146,7 +151,7 @@ exports.getCommentByNoteId = (req, res) => {
 exports.addComment = (req, res) => {
   const commentData = req.body
   const sql_insert_comment = 'insert into bb_note_comment set ?'
-  db.query(sql_insert_comment, {pid: commentData.pid, user_id: commentData.user_id, note_id: commentData.note_id, nickname: commentData.nickname, reply: commentData.reply, user_pic: commentData.user_pic, content: commentData.content, create_date: getTime()}, (err, results) => {
+  db.query(sql_insert_comment, {pid: commentData.pid, user_id: commentData.user_id, note_id: commentData.note_id, nickname: commentData.nickname, below_reply_id: commentData.below_reply_id, below_reply_name: commentData.below_reply_name, user_pic: commentData.user_pic, content: commentData.content, create_date: getTime()}, (err, results) => {
     if (err) {
       return res.err(err)
     }
