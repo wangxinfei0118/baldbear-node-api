@@ -6,7 +6,7 @@ const { message_schema } = require('../schema/message')
 
 const router = express.Router()
 
-router.get('/message/', messageHandler.getMessage)
+router.get('/message', messageHandler.getMessage)
 router.post('/message', expressJoi(message_schema), messageHandler.addMessage)
 router.delete('/message/:id', messageHandler.deleteMessage)
 

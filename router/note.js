@@ -7,7 +7,7 @@ const { note_schema } = require('../schema/note')
 const router = express.Router()
 
 router.get('/label', noteHandler.getNoteLabel)
-router.get('/note', noteHandler.getNoteList)
+router.post('/note/list', noteHandler.getNoteList)
 router.get('/note/:id', noteHandler.getNoteById)
 router.post('/note', expressJoi(note_schema), noteHandler.addNote)
 router.put('/note/:id', expressJoi(note_schema), noteHandler.editNote)
