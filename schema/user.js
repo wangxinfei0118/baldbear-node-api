@@ -15,8 +15,8 @@ exports.userinfo_schema = {
 }
 exports.update_password_schema = {
   body: {
-    oldPwd: password,
-    newPwd: joi.not(joi.ref('oldPwd')).concat(password).error(new Error('新密码不能和旧密码一样且必须为6-18位字符'))
+    old_pwd: password,
+    new_pwd: joi.not(joi.ref('oldPwd')).concat(password).error(new Error('新密码不能和旧密码一样且必须为6-18位字符'))
   }
 }
 exports.update_avatar_schema = {
