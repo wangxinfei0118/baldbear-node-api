@@ -10,7 +10,10 @@ exports.getLifeList = (req, res) => {
     res.send({
       code: 20000,
       message: '获取生活列表成功！',
-      data: results,
+      data: {
+        total: results.length,
+        records: results
+      }
     })
   })
 }
