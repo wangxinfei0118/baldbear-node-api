@@ -158,25 +158,50 @@ exports.addComment = (req, res) => {
     if (results.affectedRows !== 1) {
       return res.err('新增评论失败！')
     }
-    res.send({
-      code: 20000,
-      message: '新增评论成功！'
+    const sql_add_comment_count = 'update bb_notes set chat_count=chat_count+1 where note_id=?'
+    db.query(sql_add_comment_count, commentData.note_id, (err, results) => {
+      if (err) {
+        return res.err(err)
+      }
+      if (results.affectedRows !== 1) {
+        return res.err('更新评论数失败！')
+      }
+      res.send({
+        code: 20000,
+        message: '新增评论成功！'
+      })
     })
   })
 }
 exports.deleteComment = (req, res) => {
   const commentId = req.params.id
-  const sql_delete_comment = 'delete from bb_note_comment where id=?'
-  db.query(sql_delete_comment, commentId, (err, results) => {
+  const sql_select_note = 'select note_id from bb_note_comment where id=?'
+  db.query(sql_select_note, commentId, (err, results) => {
     if (err) {
       return res.err(err)
     }
-    if (results.affectedRows !== 1) {
-      return res.err('删除评论失败！')
-    }
-    res.send({
-      code: 20000,
-      message: '删除评论成功！'
+    const note_id = results[0].note_id
+    const sql_delete_comment = 'delete from bb_note_comment where id=?'
+    db.query(sql_delete_comment, commentId, (err, results) => {
+      if (err) {
+        return res.err(err)
+      }
+      if (results.affectedRows !== 1) {
+        return res.err('删除评论失败！')
+      }
+      const sql_reduce_comment_count = 'update bb_notes set chat_count=chat_count-1 where note_id=?'
+      db.query(sql_reduce_comment_count, note_id, (err, results) => {
+        if (err) {
+          return res.err(err)
+        }
+        if (results.affectedRows !== 1) {
+          return res.err('更新评论数失败！')
+        }
+        res.send({
+          code: 20000,
+          message: '删除评论成功！'
+        })
+      })
     })
   })
 }
