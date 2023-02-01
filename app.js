@@ -17,7 +17,7 @@ const app = express()
 
 // 封装res.err
 app.use(function (req, res, next) {
-  res.err = function (err, code = 20001) {
+  res.err = function (err, code = 50000) {
     res.send({
       code,
       message: err instanceof Error ? err.message : err,
