@@ -30,16 +30,16 @@ app.use(cors())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-
 app.use(convertVar)
 
-app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/auth\//, /^\/note\//, /^\/life\//, /^\/message\//] }))
+app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/auth\//, /^\/note\//, /^\/life\//, /^\/message\//, /^\/static\//] }))
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
 app.use('/note', noteRouter)
 app.use('/life', lifeRouter)
 app.use('/message', messageRouter)
 app.use('/file', fileRouter)
+app.use('/static/',express.static('./static/'))
 
 
 // 错误级别中间件
