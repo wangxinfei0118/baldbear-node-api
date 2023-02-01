@@ -29,24 +29,38 @@ exports.getNoteLabel = async (req, res) => {
   })
 }
 exports.getNoteList = (req, res) => {
-  const obj = req.body
-  // 根据obj.label是否存在判断是否是根据标签查询
-  const sql_note_list = `select note_id, title, summary, label, image_url, view_count, chat_count, create_date, update_date from bb_notes ` + (obj.label ? `where label='${obj.label}'`:'') + ' order by create_date desc'
-  // 分页
-
-
-  db.query(sql_note_list, (err, results) => {
-    if (err) {
-      return res.err(err)
-    }
+  const queryObj = req.body
+  const start = (queryObj.current - 1)*queryObj.size
+  // 根据queryObj.label是否存在 判断是否是根据标签查询
+  const sql_note_count = `select count(*) total from bb_notes ` + (queryObj.label ? `where label='${queryObj.label}'`:'')
+  const sql_note_list = `select note_id, title, summary, label, image_url, view_count, chat_count, create_date, update_date from bb_notes ` + (queryObj.label ? `where label='${queryObj.label}'`:'') + ` order by create_date desc limit ${start},${queryObj.size}`
+  const P1 = new Promise((resolve, reject) => {
+    db.query(sql_note_count, (err, results) => {
+      if (err) {
+        reject(err)
+      }
+      resolve(results[0])
+    })
+  })
+  const P2 = new Promise((resolve, reject) => {
+    db.query(sql_note_list, (err, results) => {
+      if (err) {
+        reject(err)
+      }
+      resolve(results)
+    })
+  })
+  Promise.all([P1,P2]).then(results => {
     res.send({
       code: 20000,
       message: '获取笔记列表成功！',
       data: {
-        total: results.length,
-        records: results
+        total: results[0].total,
+        records: results[1]
       }
     })
+  }).catch(err =>{
+    res.err(err)
   })
 }
 exports.getNoteById = (req, res) => {
