@@ -32,7 +32,17 @@ app.use(express.json())
 
 app.use(convertVar)
 
-app.use(expressJWT({ secret: config.jwtSecretKey }).unless({ path: [/^\/auth\//, /^\/note\//, /^\/life\//, /^\/message\//, /^\/static\//] }))
+app.use(expressJWT({ secret: config.jwtSecretKey }).unless({
+  path: [
+    /^\/auth\//,
+    /^\/static\//,
+    /\/viewCount\//,
+    '/note/note/list',
+    { url: /^\/note\//, methods: ['GET'] },
+    { url: /^\/life\//, methods: ['GET'] },
+    { url: /^\/message\//, methods: ['GET'] },
+  ]
+}))
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
 app.use('/note', noteRouter)
