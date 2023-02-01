@@ -1,11 +1,11 @@
 const fs = require('fs')
 const path = require("path");
-const baseUrl = process.env.NODE_ENV === 'dev' ? 'http://localhost:3008' : 'http://server.baldbear.cn'
+const config = require('../config')
 exports.uploadImage = (req, res) => {
   if (!req.file){
     return res.err('上传图片失败！')
   }
-  const fileUrl = baseUrl + req.file.path.split('baldbear-node-api')[1].replace(/\\/g,'/')
+  const fileUrl = config.locationUrl + req.file.path.split('baldbear-node-api')[1].replace(/\\/g,'/')
   res.send({
     code: 20000,
     message: '上传图片成功！',
