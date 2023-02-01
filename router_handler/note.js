@@ -34,7 +34,7 @@ exports.getNoteList = (req, res) => {
   // 根据queryObj.label是否存在 判断是否是根据标签查询
   const sql_note_count = `select count(*) total from bb_notes ` + (queryObj.label ? `where label='${queryObj.label}'`:'')
   const sql_note_list = `select note_id, title, summary, label, image_url, view_count, chat_count, create_date, update_date from bb_notes ` + (queryObj.label ? `where label='${queryObj.label}'`:'') + ` order by create_date desc limit ${start},${queryObj.size}`
-  const P1 = new Promise((resolve, reject) => {
+  const noteCount = new Promise((resolve, reject) => {
     db.query(sql_note_count, (err, results) => {
       if (err) {
         reject(err)
@@ -42,7 +42,7 @@ exports.getNoteList = (req, res) => {
       resolve(results[0])
     })
   })
-  const P2 = new Promise((resolve, reject) => {
+  const noteList = new Promise((resolve, reject) => {
     db.query(sql_note_list, (err, results) => {
       if (err) {
         reject(err)
@@ -50,7 +50,7 @@ exports.getNoteList = (req, res) => {
       resolve(results)
     })
   })
-  Promise.all([P1,P2]).then(results => {
+  Promise.all([noteCount,noteList]).then(results => {
     res.send({
       code: 20000,
       message: '获取笔记列表成功！',
@@ -81,6 +81,9 @@ exports.getNoteById = (req, res) => {
   })
 }
 exports.addNote = (req, res) => {
+  if (req.user.uid !== 1){
+    return res.err('暂无权限')
+  }
   const noteData = req.body
   const sql_insert_note = 'insert into bb_notes set ?'
   db.query(sql_insert_note, {title: noteData.title, summary: noteData.summary, label: noteData.label, image_url: noteData.image_url, view_count: 0, chat_count: 0, md_content: noteData.md_content, html_content: noteData.html_content, create_date: getTime(), update_date: getTime()}, (err, results) => {
@@ -98,6 +101,9 @@ exports.addNote = (req, res) => {
   })
 }
 exports.editNote = (req, res) => {
+  if (req.user.uid !== 1){
+    return res.err('暂无权限')
+  }
   const noteId = req.params.id
   const noteData = req.body
   noteData.update_date = getTime()
@@ -116,6 +122,9 @@ exports.editNote = (req, res) => {
   })
 }
 exports.deleteNote = (req, res) => {
+  if (req.user.uid !== 1){
+    return res.err('暂无权限')
+  }
   const noteId = req.params.id
   const sql_delete_note = 'delete from bb_notes where note_id=?'
   db.query(sql_delete_note, noteId, (err, results) => {
@@ -194,7 +203,11 @@ exports.deleteComment = (req, res) => {
     if (err) {
       return res.err(err)
     }
+    const uid = results[0].user_id
     const note_id = results[0].note_id
+    if (req.user.uid !== uid && req.user.uid !== 1) {
+      return res.err('暂无权限')
+    }
     const sql_delete_comment = 'delete from bb_note_comment where id=?'
     db.query(sql_delete_comment, commentId, (err, results) => {
       if (err) {

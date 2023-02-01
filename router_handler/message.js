@@ -34,17 +34,26 @@ exports.addMessage = (req, res) => {
 }
 exports.deleteMessage = (req, res) => {
   const messageId = req.params.id
+  const sql_uid = 'select user_id from bb_message where id=?'
   const sql_delete_message = 'delete from bb_message where id=?'
-  db.query(sql_delete_message, messageId, (err, results) => {
+  db.query(sql_uid, messageId ,(err, results) => {
     if (err) {
       return res.err(err)
     }
-    if (results.affectedRows !== 1) {
-      return res.err('删除留言失败！')
+    if (req.user.uid !== results[0].user_id && req.user.uid !== 1){
+      return res.err('暂无权限')
     }
-    res.send({
-      code: 20000,
-      message: '删除留言成功！'
+    db.query(sql_delete_message, messageId, (err, results) => {
+      if (err) {
+        return res.err(err)
+      }
+      if (results.affectedRows !== 1) {
+        return res.err('删除留言失败！')
+      }
+      res.send({
+        code: 20000,
+        message: '删除留言成功！'
+      })
     })
   })
 }
