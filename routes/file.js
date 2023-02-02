@@ -2,7 +2,7 @@ const express = require('express')
 const multer = require('multer')
 const path = require('path')
 
-const fileHandler = require('../router_handler/file')
+const fileController = require('../controllers/fileController')
 
 const router = express.Router()
 
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 
-router.post('/image/upload', upload.single('image'), fileHandler.uploadImage )
-router.delete('/image/delete', fileHandler.deleteImage)
+router.post('/image/upload', upload.single('image'), fileController.uploadImage )
+router.delete('/image/delete', fileController.deleteImage)
 
 module.exports = router
