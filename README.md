@@ -1,14 +1,6 @@
 # baldbear-node-api
 
-[![baldbear](https://img.shields.io/badge/%E7%A7%83%E5%A4%B4%E7%86%8A-%40baldbear-brightgreen)](http://baldbear.cn/)
-
-[![node](https://img.shields.io/badge/node-v14.19.0-blue)](http://baldbear.cn/)
-
-[![npm](https://img.shields.io/badge/npm-v6.14.16-blue)](http://baldbear.cn/)
-
-[![express](https://img.shields.io/badge/express-%5E4.17.1-blue)](https://www.npmjs.com/package/express)
-
-[![mysql](https://img.shields.io/badge/mysql-%5E2.18.1-blue)](http://baldbear.cn/)
+[![baldbear](https://img.shields.io/badge/%E7%A7%83%E5%A4%B4%E7%86%8A-%40baldbear-brightgreen)](http://baldbear.cn/)[![node](https://img.shields.io/badge/node-v14.19.0-blue)](http://baldbear.cn/)[![npm](https://img.shields.io/badge/npm-v6.14.16-blue)](http://baldbear.cn/)[![express](https://img.shields.io/badge/express-%5E4.17.1-blue)](https://www.npmjs.com/package/express)[![mysql](https://img.shields.io/badge/mysql-%5E2.18.1-blue)](http://baldbear.cn/)
 
 该项目是基于Node.js+Express+Mysql实现的RESTFUL API个人博客接口，接口包括：登录注册，用户信息，笔记管理，日常管理，评论管理，留言管理等，并实现权限验证，状态刷新，数据分页，条件筛选，CI集成等
 
@@ -69,7 +61,7 @@ npm run dev
 # 接口地址：http://localhost:3008
 ```
 
-生产环境
+生产环境：
 
 ```bash
 pm2 start ecosystem.config.js
@@ -80,11 +72,11 @@ pm2 start ecosystem.config.js
 ```
 ├─controllers                           # 请求、响应处理 
 ├─db                                  	# mysql数据库配置文件
-├─middleware							# 自定义中间件
-├─routes								# 接口路由
-├─schema								# 请求数据验证规则
-├─services								# 业务处理
-├─static								# 静态资源/上传文件
+├─middleware                            # 自定义中间件
+├─routes                                # 接口路由
+├─schema                                # 请求数据验证规则
+├─services                              # 业务处理
+├─static                                # 静态资源/上传文件
 ├─utils                                 # 工具函数
 │  app.js                             # 入口文件
 │  config.js                          # 全局变量及配置
@@ -116,6 +108,8 @@ pm2 start ecosystem.config.js
 
 ## API文档
 
-要查看可用 API 及其规范的列表，请启动项目并在浏览器中打开。此文档页面是使用在路由文件中作为注释编写的 [swagger](https://swagger.io/) 自动生成的。`http://localhost:3008/docs`
+要查看可用 API 及其规范的列表，请启动项目并在浏览器中打开。此文档页面是使用在路由文件中作为注释编写的 [swagger](https://swagger.io/) 自动生成的。
+
+访问`http://localhost:3008/docs`
 
 或 [点击查看在线接口文档](http://baldbear.cn/) 
