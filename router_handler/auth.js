@@ -38,7 +38,7 @@ exports.register = (req, res) => {
     regData.nickname = randomName(8)
     // 插入注册信息
     const sql_insert = 'insert into bb_users set ?'
-    db.query(sql_insert, { username: regData.username, password: regData.password, nickname: regData.nickname}, (err, results) => {
+    db.query(sql_insert, { username: regData.username, password: regData.password, nickname: regData.nickname, role: 0}, (err, results) => {
       if (err) {
         return res.err(err)
       }
