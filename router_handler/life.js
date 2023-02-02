@@ -35,6 +35,9 @@ exports.getLifeById = (req, res) => {
   })
 }
 exports.addLife = (req, res) => {
+  if (req.user.role !== 1){
+    return res.err('暂无权限')
+  }
   const lifeData = req.body
   const sql_insert_life = 'insert into bb_life set ?'
   db.query(sql_insert_life, {title: lifeData.title, html_content: lifeData.html_content, create_date: getTime(), update_date: getTime()}, (err, results) => {
@@ -51,6 +54,9 @@ exports.addLife = (req, res) => {
   })
 }
 exports.editLife  = (req, res) => {
+  if (req.user.role !== 1){
+    return res.err('暂无权限')
+  }
   const lifeId = req.params.id
   const lifeData = req.body
   lifeData.update_date = getTime()
@@ -69,6 +75,9 @@ exports.editLife  = (req, res) => {
   })
 }
 exports.deleteLife = (req, res) => {
+  if (req.user.role !== 1){
+    return res.err('暂无权限')
+  }
   const LifeId = req.params.id
   const sql_delete_life = 'delete from bb_life where id=?'
   db.query(sql_delete_life, LifeId, (err, results) => {

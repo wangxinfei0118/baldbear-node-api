@@ -81,7 +81,7 @@ exports.getNoteById = (req, res) => {
   })
 }
 exports.addNote = (req, res) => {
-  if (req.user.uid !== 1){
+  if (req.user.role !== 1){
     return res.err('暂无权限')
   }
   const noteData = req.body
@@ -101,7 +101,7 @@ exports.addNote = (req, res) => {
   })
 }
 exports.editNote = (req, res) => {
-  if (req.user.uid !== 1){
+  if (req.user.role !== 1){
     return res.err('暂无权限')
   }
   const noteId = req.params.id
@@ -122,7 +122,7 @@ exports.editNote = (req, res) => {
   })
 }
 exports.deleteNote = (req, res) => {
-  if (req.user.uid !== 1){
+  if (req.user.role !== 1){
     return res.err('暂无权限')
   }
   const noteId = req.params.id
@@ -205,7 +205,7 @@ exports.deleteComment = (req, res) => {
     }
     const uid = results[0].user_id
     const note_id = results[0].note_id
-    if (req.user.uid !== uid && req.user.uid !== 1) {
+    if (req.user.uid !== uid && req.user.role !== 1) {
       return res.err('暂无权限')
     }
     const sql_delete_comment = 'delete from bb_note_comment where id=?'

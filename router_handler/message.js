@@ -40,7 +40,7 @@ exports.deleteMessage = (req, res) => {
     if (err) {
       return res.err(err)
     }
-    if (req.user.uid !== results[0].user_id && req.user.uid !== 1){
+    if (req.user.uid !== results[0].user_id && req.user.role !== 1){
       return res.err('暂无权限')
     }
     db.query(sql_delete_message, messageId, (err, results) => {

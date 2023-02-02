@@ -3,6 +3,9 @@ const bcrypt = require('bcryptjs')
 
 exports.getUserInfo = (req, res) => {
   const uid = req.params.uid
+  if (req.user.uid !== uid){
+    return res.err('暂无权限')
+  }
   const sql_userinfo = `select uid, username, nickname, email, phone, user_pic from bb_users where uid=?`
   db.query(sql_userinfo,uid,(err,results) => {
     if (err) {
@@ -20,6 +23,9 @@ exports.getUserInfo = (req, res) => {
 }
 exports.updateUserInfo = (req, res) => {
   const uid = req.params.uid
+  if (req.user.uid !== uid){
+    return res.err('暂无权限')
+  }
   const userinfo = req.body
   const sql_update_userinfo = `update bb_users set ? where uid=?`
   db.query(sql_update_userinfo,[userinfo, uid],(err,results) => {
@@ -37,6 +43,9 @@ exports.updateUserInfo = (req, res) => {
 }
 exports.updatePassword = (req, res) => {
   const uid = req.params.uid
+  if (req.user.uid !== uid){
+    return res.err('暂无权限')
+  }
   const {old_pwd, new_pwd} = req.body
   const sql_select_userinfo = `select * from bb_users where uid=?`
   db.query(sql_select_userinfo, uid, (err, results) => {
