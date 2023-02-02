@@ -67,21 +67,4 @@ exports.updatePassword = (req, res) => {
     })
   })
 }
-exports.updateAvatar = (req, res) => {
-  const uid = req.params.uid
-  const avatar = req.body.avatar
-  const sql_update_avatar = 'update bb_users set user_pic=? where uid=?'
-  db.query(sql_update_avatar, [avatar, uid], (err, results) => {
-    if (err) {
-      return res.err(err)
-    }
-    if (results.affectedRows !== 1) {
-      return res.err('更新头像失败！')
-    }
-    res.send({
-      code: 20000,
-      message: '更新密码成功！',
-    })
-  })
 
-}
