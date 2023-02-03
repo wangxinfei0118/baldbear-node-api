@@ -2,7 +2,7 @@ const express = require('express')
 const expressJoi = require('@escook/express-joi')
 
 const authController = require('../controllers/authController')
-const { reg_schema, login_schema } = require('../schema/auth')
+const { reg_schema, login_schema } = require('../schema/authSchema')
 
 const router = express.Router()
 
@@ -19,7 +19,7 @@ router.post('/login', expressJoi(login_schema), authController.login)
 router.get('/logout', authController.logout)
 
 // 刷新token
-router.get('/refresh', authHandler.refresh)
+router.get('/refresh', authController.refresh)
 
 
 module.exports = router

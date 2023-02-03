@@ -2,7 +2,7 @@ const express = require('express')
 const expressJoi = require('@escook/express-joi')
 
 const messageController = require('../controllers/messageController')
-const { message_schema } = require('../schema/message')
+const { message_schema } = require('../schema/messageSchema')
 
 const router = express.Router()
 

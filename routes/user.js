@@ -2,7 +2,7 @@ const express = require('express')
 const expressJoi = require('@escook/express-joi')
 
 const userController = require('../controllers/userController')
-const { userinfo_schema, update_password_schema, update_avatar_schema } = require('../schema/user')
+const { userinfo_schema, update_password_schema } = require('../schema/userSchema')
 
 const router = express.Router()
 

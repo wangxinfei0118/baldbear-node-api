@@ -2,7 +2,7 @@ const express = require('express')
 const expressJoi = require('@escook/express-joi')
 
 const lifeController= require('../controllers/lifeController')
-const { life_schema } = require('../schema/life')
+const { life_schema } = require('../schema/lifeSchema')
 
 const router = express.Router()
 
