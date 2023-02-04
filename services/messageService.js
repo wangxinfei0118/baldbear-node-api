@@ -1,6 +1,6 @@
-const db = require("../db");
-const arrToTree = require("../utils/arrToTree");
-const getTime = require("../utils/getTime");
+const db = require('../db')
+const arrToTree = require('../utils/arrToTree')
+const getTime = require('../utils/getTime')
 
 exports.getMessage = async () => {
   const sql_message = 'select * from bb_message'
@@ -15,10 +15,12 @@ exports.getMessage = async () => {
     })
   })
 }
+
 exports.addMessage = async (messageData) => {
+  messageData.create_date = getTime()
   const sql_insert_message = 'insert into bb_message set ?'
   await new Promise((resolve, reject) => {
-    db.query(sql_insert_message, {pid: messageData.pid, user_id: messageData.user_id, nickname: messageData.nickname, below_reply_id: messageData.below_reply_id, below_reply_name: messageData.below_reply_name, user_pic: messageData.user_pic, content: messageData.content, create_date: getTime()}, (err, results) => {
+    db.query(sql_insert_message, messageData, (err, results) => {
       if (err) {
         reject(err)
         return
@@ -30,11 +32,12 @@ exports.addMessage = async (messageData) => {
     })
   })
 }
+
 exports.deleteMessage = async (messageId, uid, role) => {
   const sql_uid = 'select user_id from bb_message where id=?'
   const sql_delete_message = 'delete from bb_message where id=?'
   await new Promise((resolve, reject) => {
-    db.query(sql_uid, messageId ,(err, results) => {
+    db.query(sql_uid, messageId, (err, results) => {
       if (err) {
         reject(err)
         return

@@ -1,5 +1,5 @@
-const db = require("../db");
-const getTime = require("../utils/getTime");
+const db = require('../db')
+const getTime = require('../utils/getTime')
 
 exports.getLifeList = async () => {
   const sql_life = 'select * from bb_life'
@@ -12,6 +12,7 @@ exports.getLifeList = async () => {
     })
   })
 }
+
 exports.getLifeById = async (lifeId) => {
   const sql_life_item = 'select * from bb_life where id=?'
   return await new Promise((resolve, reject) => {
@@ -27,6 +28,7 @@ exports.getLifeById = async (lifeId) => {
     })
   })
 }
+
 exports.addLife = async (lifeData) => {
   lifeData.create_date = lifeData.update_date = getTime()
   const sql_insert_life = 'insert into bb_life set ?'
@@ -43,7 +45,8 @@ exports.addLife = async (lifeData) => {
     })
   })
 }
-exports.editLife  = async (lifeId, lifeData) => {
+
+exports.editLife = async (lifeId, lifeData) => {
   lifeData.update_date = getTime()
   const sql_edit_life = 'update bb_life set ? where id=?'
   await new Promise((resolve, reject) => {
@@ -59,6 +62,7 @@ exports.editLife  = async (lifeId, lifeData) => {
     })
   })
 }
+
 exports.deleteLife = async (LifeId) => {
   const sql_delete_life = 'delete from bb_life where id=?'
   await new Promise((resolve, reject) => {

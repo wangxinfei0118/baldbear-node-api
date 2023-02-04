@@ -1,6 +1,6 @@
-const db = require("../db");
-const arrToTree = require("../utils/arrToTree");
-const getTime = require("../utils/getTime");
+const db = require('../db')
+const arrToTree = require('../utils/arrToTree')
+const getTime = require('../utils/getTime')
 
 exports.getNoteLabel = async () => {
   const sql_label = 'select * from bb_labels'
@@ -21,15 +21,19 @@ exports.getNoteLabel = async () => {
       resolve(results)
     })
   })
-  return arrToTree(labelList,labelItemList,'labelList') // 转成树状结构
+  return arrToTree(labelList, labelItemList, 'labelList') // 转成树状结构
 }
+
 exports.getNoteList = async (queryObj) => {
   // 开始查询的index
   const start = (queryObj.current - 1) * queryObj.size
   // 查询笔记总数
-  const sql_note_count = `select count(*) total from bb_notes ` + (queryObj.label ? `where label='${queryObj.label}'`:'')
+  const sql_note_count = `select count(*) total from bb_notes ` + (queryObj.label ? `where label='${queryObj.label}'` : '')
   // 根据queryObj.label是否存在 判断是否是根据标签查询
-  const sql_note_list = `select note_id, title, summary, label, image_url, view_count, chat_count, create_date, update_date from bb_notes ` + (queryObj.label ? `where label='${queryObj.label}'`:'') + ` order by create_date desc limit ${start},${queryObj.size}`
+  const sql_note_list =
+    `select note_id, title, summary, label, image_url, view_count, chat_count, create_date, update_date from bb_notes ` +
+    (queryObj.label ? `where label='${queryObj.label}'` : '') +
+    ` order by create_date desc limit ${start},${queryObj.size}`
   const noteCount = new Promise((resolve, reject) => {
     db.query(sql_note_count, (err, results) => {
       if (err) {
@@ -46,8 +50,9 @@ exports.getNoteList = async (queryObj) => {
       resolve(results)
     })
   })
-  return await Promise.all([noteCount,noteList])
+  return await Promise.all([noteCount, noteList])
 }
+
 exports.getNoteById = async (noteId) => {
   const sql_note_item = 'select * from bb_notes where note_id=?'
   return await new Promise((resolve, reject) => {
@@ -56,13 +61,14 @@ exports.getNoteById = async (noteId) => {
         reject(err)
         return
       }
-      if (results.length !==1){
+      if (results.length !== 1) {
         reject('获取笔记详情失败！')
       }
       resolve(results[0])
     })
   })
 }
+
 exports.addNote = async (noteData) => {
   noteData.create_date = noteData.update_date = getTime()
   noteData.view_count = noteData.chat_count = 0
@@ -80,6 +86,7 @@ exports.addNote = async (noteData) => {
     })
   })
 }
+
 exports.editNote = async (noteId, noteData) => {
   noteData.update_date = getTime()
   const sql_edit_note = 'update bb_notes set ? where note_id=?'
@@ -96,6 +103,7 @@ exports.editNote = async (noteId, noteData) => {
     })
   })
 }
+
 exports.deleteNote = async (noteId) => {
   const sql_delete_note = 'delete from bb_notes where note_id=?'
   await new Promise((resolve, reject) => {
@@ -111,6 +119,7 @@ exports.deleteNote = async (noteId) => {
     })
   })
 }
+
 exports.updateNoteViewCount = async (noteId) => {
   const sql_note_list = 'update bb_notes set view_count=view_count+1 where note_id=?'
   await new Promise((resolve, reject) => {
@@ -126,6 +135,7 @@ exports.updateNoteViewCount = async (noteId) => {
     })
   })
 }
+
 exports.getCommentByNoteId = async (noteId) => {
   const sql_comment = 'select * from bb_note_comment where note_id=?'
   return await new Promise((resolve, reject) => {
@@ -140,9 +150,10 @@ exports.getCommentByNoteId = async (noteId) => {
   })
 }
 exports.addComment = async (commentData) => {
+  commentData.create_date = getTime()
   const sql_insert_comment = 'insert into bb_note_comment set ?'
   await new Promise((resolve, reject) => {
-    db.query(sql_insert_comment, {pid: commentData.pid, user_id: commentData.user_id, note_id: commentData.note_id, nickname: commentData.nickname, below_reply_id: commentData.below_reply_id, below_reply_name: commentData.below_reply_name, user_pic: commentData.user_pic, content: commentData.content, create_date: getTime()}, (err, results) => {
+    db.query(sql_insert_comment, commentData, (err, results) => {
       if (err) {
         reject(err)
         return
@@ -167,6 +178,7 @@ exports.addComment = async (commentData) => {
     })
   })
 }
+
 exports.deleteComment = async (commentId, uid, role) => {
   const sql_select_note = 'select note_id from bb_note_comment where id=?'
   const note_id = await new Promise((resolve, reject) => {

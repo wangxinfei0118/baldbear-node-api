@@ -1,13 +1,13 @@
-const db = require("../db");
-const bcrypt = require("bcryptjs");
-const randomName = require("../utils/randomName");
-const jwt = require("jsonwebtoken");
-const config = require("../config");
+const db = require('../db')
+const bcrypt = require('bcryptjs')
+const randomName = require('../utils/randomName')
+const jwt = require('jsonwebtoken')
+const config = require('../config')
 
 exports.username = async (username) => {
   const sql_username = `select * from bb_users where username=?`
   await new Promise((resolve, reject) => {
-    db.query(sql_username, username,(err,results) => {
+    db.query(sql_username, username, (err, results) => {
       if (err) {
         reject(err)
         return
@@ -19,15 +19,16 @@ exports.username = async (username) => {
     })
   })
 }
+
 exports.register = async (regData) => {
   // 对密码进行 bcrypt 加密
   regData.password = bcrypt.hashSync(regData.password, 10)
   // 生成随机昵称
   regData.nickname = randomName(8)
-  // 插入注册信息
+  regData.role = 0
   const sql_insert = 'insert into bb_users set ?'
   await new Promise((resolve, reject) => {
-    db.query(sql_insert, { username: regData.username, password: regData.password, nickname: regData.nickname, role: 0}, (err, results) => {
+    db.query(sql_insert, regData, (err, results) => {
       if (err) {
         reject(err)
         return
@@ -41,14 +42,14 @@ exports.register = async (regData) => {
 exports.login = async (loginData) => {
   const sql_login = `select * from bb_users where username=?`
   return await new Promise((resolve, reject) => {
-    db.query(sql_login,loginData.username,(err,results) => {
+    db.query(sql_login, loginData.username, (err, results) => {
       if (err) {
         reject(err)
-        return;
+        return
       }
       if (results.length === 0) {
         reject('该用户名不存在')
-        return;
+        return
       }
       const compareResult = bcrypt.compareSync(loginData.password, results[0].password)
       if (!compareResult) {
@@ -58,24 +59,24 @@ exports.login = async (loginData) => {
       // 剔除password user_pic
       const tokenObj = { ...results[0], password: '', user_pic: '' }
       const accessToken = jwt.sign(tokenObj, config.jwtSecretKey, {
-        expiresIn: '2h',
+        expiresIn: '2h'
       })
-      const refreshToken = jwt.sign({...tokenObj, 'refresh': true}, config.jwtSecretKey, {
-        expiresIn: '10h',
+      const refreshToken = jwt.sign({ ...tokenObj, refresh: true }, config.jwtSecretKey, {
+        expiresIn: '10h'
       })
-      const {password,...userinfo} = results[0]
-      resolve({accessToken, refreshToken, userinfo})
+      const { password, ...userinfo } = results[0]
+      resolve({ accessToken, refreshToken, userinfo })
     })
   })
 }
-exports.refresh =  async (refreshToken) => {
+exports.refresh = async (refreshToken) => {
   const payload = await new Promise((resolve, reject) => {
-    jwt.verify(refreshToken, config.jwtSecretKey,(err, payload) =>{
-      if (err){
+    jwt.verify(refreshToken, config.jwtSecretKey, (err, payload) => {
+      if (err) {
         reject(err)
         return
       }
-      if (!payload.refresh){
+      if (!payload.refresh) {
         reject('refreshToken不合法')
       }
       resolve(payload)
@@ -83,17 +84,17 @@ exports.refresh =  async (refreshToken) => {
   })
   const sql_login = `select * from bb_users where username=?`
   return await new Promise((resolve, reject) => {
-    db.query(sql_login,payload.username,(err,results) => {
-      if (err){
+    db.query(sql_login, payload.username, (err, results) => {
+      if (err) {
         reject(err)
         return
       }
       const tokenObj = { ...results[0], password: '', user_pic: '' }
       const accessToken = jwt.sign(tokenObj, config.jwtSecretKey, {
-        expiresIn: '2h',
+        expiresIn: '2h'
       })
-      const {password,...userinfo} = results[0]
-      resolve({accessToken, userinfo})
+      const { password, ...userinfo } = results[0]
+      resolve({ accessToken, userinfo })
     })
   })
 }

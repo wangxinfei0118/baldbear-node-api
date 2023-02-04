@@ -1,10 +1,10 @@
-const db = require("../db");
-const bcrypt = require("bcryptjs");
+const db = require('../db')
+const bcrypt = require('bcryptjs')
 
 exports.getUserInfo = async (uid) => {
   const sql_userinfo = `select uid, username, nickname, email, phone, user_pic from bb_users where uid=?`
   return await new Promise((resolve, reject) => {
-    db.query(sql_userinfo,uid,(err,results) => {
+    db.query(sql_userinfo, uid, (err, results) => {
       if (err) {
         reject(err)
         return
@@ -16,10 +16,11 @@ exports.getUserInfo = async (uid) => {
     })
   })
 }
+
 exports.updateUserInfo = async (userinfo, uid) => {
   const sql_update_userinfo = `update bb_users set ? where uid=?`
   await new Promise((resolve, reject) => {
-    db.query(sql_update_userinfo,[userinfo, uid],(err,results) => {
+    db.query(sql_update_userinfo, [userinfo, uid], (err, results) => {
       if (err) {
         reject(err)
         return
@@ -31,6 +32,7 @@ exports.updateUserInfo = async (userinfo, uid) => {
     })
   })
 }
+
 exports.updatePassword = async (uid, old_pwd, new_pwd) => {
   const sql_select_userinfo = `select * from bb_users where uid=?`
   await new Promise((resolve, reject) => {

@@ -14,9 +14,13 @@ const joi = require('joi')
 // 用户名的验证规则
 const username = joi.string().alphanum().min(4).max(12).required().error(new Error('用户名必须为4-12位数字字母组合'))
 // 密码的验证规则
-const password = joi.string().pattern(/^[\S]{6,18}$/).required().error(new Error('密码必须为6-18位字符'))
+const password = joi
+  .string()
+  .pattern(/^[\S]{6,18}$/)
+  .required()
+  .error(new Error('密码必须为6-18位字符'))
 // 重复密码的验证规则
-const repassword = joi.string().required().valid(joi.ref("password ")).error(new Error("两次密码不一致！"))
+const repassword = joi.string().required().valid(joi.ref('password ')).error(new Error('两次密码不一致！'))
 
 exports.reg_schema = {
   body: {
@@ -28,7 +32,6 @@ exports.reg_schema = {
 exports.login_schema = {
   body: {
     username,
-    password,
+    password
   }
 }
-

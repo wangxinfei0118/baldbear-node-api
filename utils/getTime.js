@@ -1,10 +1,11 @@
 function getTime() {
-  let yy = new Date().getFullYear();
-  let mm =new Date().getMonth() < 10 ? "0" + (new Date().getMonth() + 1) : new Date().getMonth() + 1;
-  let dd = new Date().getDate() <10 ? "0" + new Date().getDate() : new Date().getDate();
-  let hh = new Date().getHours();
-  let mf = new Date().getMinutes()<10 ? '0'+new Date().getMinutes() : new Date().getMinutes();
-  let ss = new Date().getSeconds()<10 ? '0'+new Date().getSeconds() : new Date().getSeconds();
-  return  yy+'-'+mm+'-'+dd+' '+hh+':'+mf+':'+ss;
+  let date = new Date()
+  let yy = date.getFullYear()
+  let mm = date.getMonth() < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+  let dd = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+  let hh = date.getHours()
+  let mf = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+  let ss = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+  return yy + '-' + mm + '-' + dd + ' ' + hh + ':' + mf + ':' + ss
 }
 module.exports = getTime

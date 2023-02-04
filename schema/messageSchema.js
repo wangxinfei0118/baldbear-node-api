@@ -8,7 +8,6 @@ const below_reply_name = joi.any()
 const user_pic = joi.string().uri().error(new Error('图片url格式不正确'))
 const content = joi.string().required().error(new Error('内容不能为空'))
 
-
 exports.message_schema = {
   body: {
     pid,
@@ -20,4 +19,3 @@ exports.message_schema = {
     content
   }
 }
-
