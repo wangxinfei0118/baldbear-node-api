@@ -1,0 +1,165 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        uid:
+          type: number
+        nickname:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        role:
+          type: number
+          enum: [0, 1]
+          description: 1为管理员，0为用户
+        userPic:
+          type: string
+          description: 用户头像
+      example:
+        id: 111
+        nickname: fakename
+        email: fake@example.com
+        phone: 12345678900
+        role: 0
+        userPic: http://localhost:3008/static/uploads/1675240793946.jpeg
+    Note:
+      type: object
+      required:
+        - title
+        - summary
+        - label
+        - imageUrl
+        - mdContent
+        - htmlContent
+      properties:
+        noteId:
+          type: number
+        title:
+          type: string
+        summary:
+          type: string
+        label:
+          type: string
+        imageUrl:
+          type: string
+        mdContent:
+          type: string
+          description: Makedown格式内容
+        htmlContent:
+          type: string
+          description: Html格式内容
+      example:
+        noteId: 1
+        title: 测试
+        summary: 这是一个测试
+        label: 测试
+        imageUrl: xxx.xxx.1.jpg
+        mdContent: '# 这是一个一级标题'
+        htmlContent: '<h1><a id="_0"></a>这是一个一级标题</h1>'
+
+    Life:
+      type: object
+      required:
+        - title
+        - mdContent
+        - htmlContent
+      properties:
+        id:
+          type: number
+        title:
+          type: string
+        mdContent:
+          type: string
+          description: Makedown格式内容
+        htmlContent:
+          type: string
+          description: Html格式内容
+      example:
+        id: 1
+        title: 测试
+        mdContent: '# 这是一个一级标题'
+        htmlContent: '<h1><a id="_0"></a>这是一个一级标题</h1>'
+
+    Message:
+      type: object
+      required:
+        - pid
+        - userId
+        - nickname
+        - content
+        - userPic
+      properties:
+        id:
+          type: number
+        pid:
+          type: number
+        userId:
+          type: number
+        belowReplyId:
+          type: number
+        belowReplyName:
+          type: string
+        content:
+          type: string
+        userPic:
+          type: string
+          description: 用户头像
+      example:
+        id: 1
+        pid: -1
+        userId: 1
+        content: 回复
+        nickname: fake name
+        belowReplyId: 1
+        belowReplyName: fake name1
+        userPic: http://localhost:3008/static/uploads/1675240793946.jpeg
+
+    Token:
+      type: string
+      example:
+        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZWJhYzUzNDk1NGI1NDEzOTgwNmMxMTIiLCJpYXQiOjE1ODkyOTg0ODQsImV4cCI6MTU4OTMwMDI4NH0.m1U63blB0MLej_WfB7yC2FTMnCziif9X8yzwDEfJXAg
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: number
+        message:
+          type: string
+
+  responses:
+    Successful:
+      description: 成功处理请求
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+              message:
+                type: string
+            example:
+              code: 20000
+              message: 操作成功！
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 401
+            message: Please authenticate
+
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
