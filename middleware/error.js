@@ -6,6 +6,8 @@ const joi = require('joi')
  * 401001 用户无权限进行操作
  * 50000 业务自定义错误
  * 50001 表单验证失败
+ * 50002 查询失败 前端进入404
+ * 50003 未知错误
  */
 
 const error = function (err, req, res, next) {
@@ -13,6 +15,6 @@ const error = function (err, req, res, next) {
   if (err instanceof joi.ValidationError) return res.err('表单验证失败', 50001)
   // 身份认证失败
   if (err.name === 'UnauthorizedError') return res.err('身份认证失败，清重新登录', 40100)
-  res.err(err)
+  res.err(err, 50003)
 }
 module.exports = error

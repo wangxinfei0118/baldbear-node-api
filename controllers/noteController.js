@@ -15,7 +15,7 @@ exports.getNoteList = async (req, res) => {
 
 exports.getNoteById = async (req, res) => {
   const [err, noteDetail] = await to(noteService.getNoteById(req.params.id))
-  if (err) return res.err(err)
+  if (err) return res.err(err, 50002)
   res.send({ code: 20000, message: '获取笔记详情成功！', data: noteDetail })
 }
 
