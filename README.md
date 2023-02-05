@@ -16,8 +16,9 @@
 - 封装异常处理函数，进行全局异常处理
 - 使用[cross-env](https://github.com/kentcdodds/cross-env#readme)管理环境变量
 - 文件上传与静态资源访问
+- 封装xss过滤中间件，预防xss注入
 - 自定义变量命名转换与错误处理中间件
-- 数据列表的分页查询
+- 数据的分页查询与条件查询
 - 使用 swagger-jsdoc 和 [swagger-ui-express](https://github.com/scottie1984/swagger-ui-express)生成api文档
 - 使用[PM2](https://pm2.keymetrics.io/)对生成环境下的进程进行管理
 
