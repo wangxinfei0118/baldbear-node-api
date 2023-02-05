@@ -3,6 +3,7 @@ const expressJoi = require('@escook/express-joi')
 
 const noteController = require('../controllers/noteController')
 const { note_schema, comment_schema } = require('../schema/noteSchema')
+const xssFilter = require('../middleware/xssFilter')
 
 const router = express.Router()
 
@@ -23,7 +24,7 @@ router.put('/viewCount/:id', noteController.updateNoteViewCount)
 // 根据笔记id获取评论列表
 router.get('/comment/:id', noteController.getCommentByNoteId)
 // 新增评论
-router.post('/comment', expressJoi(comment_schema), noteController.addComment)
+router.post('/comment', expressJoi(comment_schema), xssFilter, noteController.addComment)
 // 删除评论
 router.delete('/comment/:id', noteController.deleteComment)
 

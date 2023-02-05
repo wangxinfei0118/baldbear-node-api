@@ -3,13 +3,14 @@ const expressJoi = require('@escook/express-joi')
 
 const messageController = require('../controllers/messageController')
 const { message_schema } = require('../schema/messageSchema')
+const xssFilter = require('../middleware/xssFilter')
 
 const router = express.Router()
 
 // 获取留言列表
 router.get('/message', messageController.getMessage)
 // 新增留言
-router.post('/message', expressJoi(message_schema), messageController.addMessage)
+router.post('/message', expressJoi(message_schema), xssFilter, messageController.addMessage)
 // 删除留言
 router.delete('/message/:id', messageController.deleteMessage)
 
