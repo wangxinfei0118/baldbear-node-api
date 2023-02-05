@@ -2,7 +2,7 @@
 
 [![baldbear](https://img.shields.io/badge/%E7%A7%83%E5%A4%B4%E7%86%8A-%40baldbear-brightgreen)](http://baldbear.cn/)[![node](https://img.shields.io/badge/node-v14.19.0-blue)](http://baldbear.cn/)[![npm](https://img.shields.io/badge/npm-v6.14.16-blue)](http://baldbear.cn/)[![express](https://img.shields.io/badge/express-%5E4.17.1-blue)](https://www.npmjs.com/package/express)[![mysql](https://img.shields.io/badge/mysql-v5.7-blue)](http://baldbear.cn/)
 
-该项目是基于Node.js+Express+Mysql实现的RESTFUL API前后端分离个人博客接口，接口包括：登录注册，用户信息，笔记管理，日常管理，评论管理，留言管理等，并实现权限验证，状态刷新，数据分页，条件筛选，swagger等
+该项目是基于Node.js+Express+Mysql实现的RESTFUL API前后端分离个人博客接口，接口包括：登录注册，用户信息，笔记管理，日常管理，评论管理，留言管理等，并实现权限验证，状态刷新，数据分页，条件筛选，swagger等功能
 
 [博客在线地址](http://baldbear.cn)   [项目前端仓库](https://github.com/wangxinfei0118/baldbear-blog) 
 
@@ -23,8 +23,6 @@
 - 使用[PM2](https://pm2.keymetrics.io/)对生成环境下的进程进行管理
 
 ## 快速开始
-
-首先使克隆项目，然后进入项目根目录使用命令安装包，最后命令启动项目，代码会根据模型自动创建数据库表的。
 
 克隆项目：
 
