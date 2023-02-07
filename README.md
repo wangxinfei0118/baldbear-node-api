@@ -42,7 +42,7 @@ npm install
 ```bash
 # 登录数据库
 mysql -uroot -p密码
-# 使用 baldbear 数据库
+# 创建并进入 baldbear 数据库
 create database baldbear
 use baldbear
 # 导入sql文件
@@ -63,6 +63,8 @@ npm run dev
 生产环境：
 
 ```bash
+npm start
+# 或
 pm2 start ecosystem.config.js
 ```
 
@@ -111,4 +113,4 @@ pm2 start ecosystem.config.js
 
 访问`http://localhost:3008/docs`
 
-或 [点击查看在线接口文档](http://baldbear.cn/) 
+或 [点击查看在线接口文档](http://api.baldbear.cn/docs/) 
