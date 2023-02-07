@@ -1,6 +1,6 @@
 # baldbear-node-api
 
-[![baldbear](https://img.shields.io/badge/%E7%A7%83%E5%A4%B4%E7%86%8A-%40baldbear-brightgreen)](http://baldbear.cn/)[![node](https://img.shields.io/badge/node-v14.19.0-blue)](http://baldbear.cn/)[![npm](https://img.shields.io/badge/npm-v6.14.16-blue)](http://baldbear.cn/)[![express](https://img.shields.io/badge/express-%5E4.17.1-blue)](https://www.npmjs.com/package/express)[![mysql](https://img.shields.io/badge/mysql-v5.7-blue)](http://baldbear.cn/)
+[![baldbear](https://img.shields.io/badge/%E7%A7%83%E5%A4%B4%E7%86%8A-%40baldbear-brightgreen)](http://baldbear.cn/)[![node](https://img.shields.io/badge/node-v14.19.0-blue)](https://nodejs.org/)[![npm](https://img.shields.io/badge/npm-v6.14.16-blue)](https://www.npmjs.com/)[![express](https://img.shields.io/badge/express-%5E4.17.1-blue)](https://expressjs.com/)[![mysql](https://img.shields.io/badge/mysql-v5.7-blue)](https://www.mysql.com/)
 
 该项目是基于Node.js+Express+Mysql实现的RESTFUL API前后端分离个人博客接口，接口包括：登录注册，用户信息，笔记管理，日常管理，评论管理，留言管理等，并实现权限验证，状态刷新，数据分页，条件筛选，swagger等功能
 
