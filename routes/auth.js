@@ -28,12 +28,12 @@ module.exports = router
 
 /**
  * @swagger
- * /auth/username/:username:
+ * /auth/username/{username}:
  *   get:
  *     tags:
  *       - Auth
- *     summary: 查询用户名是否可以
- *     description: 查询用户名是否可以
+ *     summary: 查询用户名是否可以使用
+ *     description: 查询用户名是否可以使用
  *     parameters:
  *       - in: path
  *         name: username
