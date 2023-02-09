@@ -26,6 +26,8 @@ exports.register = async (regData) => {
   // 生成随机昵称
   regData.nickname = randomName(8)
   regData.role = 0
+  // 剔除repassword
+  Reflect.deleteProperty(regData, 'repassword')
   const sql_insert = 'insert into bb_users set ?'
   await new Promise((resolve, reject) => {
     db.query(sql_insert, regData, (err, results) => {
@@ -36,6 +38,7 @@ exports.register = async (regData) => {
       if (results.affectedRows !== 1) {
         reject('注册用户失败，请稍后再试！')
       }
+      resolve()
     })
   })
 }
