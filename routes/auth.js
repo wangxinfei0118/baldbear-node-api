@@ -2,12 +2,12 @@ const express = require('express')
 const expressJoi = require('@escook/express-joi')
 
 const authController = require('../controllers/authController')
-const { reg_schema, login_schema } = require('../schema/authSchema')
+const { reg_schema, login_schema, username_schema } = require('../schema/authSchema')
 
 const router = express.Router()
 
 // 检测用户名是否存在
-router.get('/username/:username', authController.username)
+router.get('/username/:username', expressJoi(username_schema), authController.username)
 // 注册
 router.post('/register', expressJoi(reg_schema), authController.register)
 // 登录
