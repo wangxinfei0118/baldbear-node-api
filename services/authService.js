@@ -26,6 +26,7 @@ exports.register = async (regData) => {
   // 生成随机昵称
   regData.nickname = randomName(8)
   regData.role = 0
+  regData.user_pic = ''
   // 剔除repassword
   Reflect.deleteProperty(regData, 'repassword')
   const sql_insert = 'insert into bb_users set ?'

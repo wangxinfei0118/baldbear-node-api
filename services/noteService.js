@@ -180,7 +180,7 @@ exports.addComment = async (commentData) => {
 }
 
 exports.deleteComment = async (commentId, uid, role) => {
-  const sql_select_note = 'select note_id from bb_note_comment where id=?'
+  const sql_select_note = 'select * from bb_note_comment where id=?'
   const note_id = await new Promise((resolve, reject) => {
     db.query(sql_select_note, commentId, (err, results) => {
       if (err) {
