@@ -14,7 +14,7 @@ exports.addMessage = async (req, res) => {
 }
 
 exports.deleteMessage = async (req, res) => {
-  const [err] = await to(messageService.deleteMessage(req.params.id, req.user.id, req.user.role))
+  const [err] = await to(messageService.deleteMessage(req.params.id, req.user.uid, req.user.role))
   if (err) return res.err(err)
   res.send({ code: 20000, message: '删除留言成功！' })
 }
