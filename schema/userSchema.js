@@ -11,7 +11,7 @@ const password = joi
   .pattern(/^[\S]{6,18}$/)
   .required()
   .error(new Error('密码必须为6-18位字符'))
-const user_pic = joi.string()
+const user_pic = joi.any()
 
 exports.userinfo_schema = {
   body: {
