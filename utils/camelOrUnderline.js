@@ -1,5 +1,5 @@
 const underlineToCamel = (data) => {
-  if (typeof data != 'object' || !data || data instanceof Date) return data
+  if (typeof data != 'object' || !data || data instanceof Date || data instanceof RegExp) return data
   if (Array.isArray(data)) {
     return data.map((item) => underlineToCamel(item))
   }
@@ -12,7 +12,7 @@ const underlineToCamel = (data) => {
   return newData
 }
 const camelToUnderline = (data) => {
-  if (typeof data != 'object' || !data) return data
+  if (typeof data != 'object' || !data || data instanceof Date || data instanceof RegExp) return data
   if (Array.isArray(data)) {
     return data.map((item) => camelToUnderline(item))
   }
