@@ -2,7 +2,7 @@ const db = require('../db')
 const getTime = require('../utils/getTime')
 
 exports.getLifeList = async () => {
-  const sql_life = 'select * from bb_life'
+  const sql_life = 'select * from bb_life order by create_date desc'
   return await new Promise((resolve, reject) => {
     db.query(sql_life, (err, results) => {
       if (err) {
